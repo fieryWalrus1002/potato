@@ -33,4 +33,10 @@ plot_export_path: !!python/object/apply:pathlib.WindowsPath
 - image_export
 - Jun22_2020
 project_stub: Potato_Fertilizer_Othello
-raw_image_path: ''
+raw_image_import_path: !!python/object/apply:pathlib.WindowsPath
+- 'C:'
+- data
+- remote_sensing
+- images
+- potato
+- Jun22_2020
