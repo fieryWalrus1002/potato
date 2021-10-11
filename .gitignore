@@ -6,9 +6,15 @@ __pycache__/
 # C extensions
 *.so
 
+# heck with you yaml
+*.yaml
+
 # big image files
 *.tiff
 *.tif
+*.npy
+*.png
+
 
 # Distribution / packaging
 .Python
@@ -146,3 +152,4 @@ src/__pycache__/
 .vscode/settings.json
 venv/Lib/site-packages
 .vscode/
+.editorconfig
