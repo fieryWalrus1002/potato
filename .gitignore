@@ -9,6 +9,9 @@ __pycache__/
 # heck with you yaml
 *.yaml
 
+# data export
+
+
 # big image files
 *.tiff
 *.tif

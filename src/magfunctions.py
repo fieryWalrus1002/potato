@@ -1,13 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from IPython.display import display
-from itertools import combinations
-from itertools import product
 import matplotlib.patches as patches
 from PIL import Image
 import os
 import cv2 as cv
 import glob
+import numpy.typing as npt
 
 
 class PlotCoordinates:
@@ -19,7 +17,8 @@ class PlotCoordinates:
     def get_roi_shape(
         self, plot_shape: tuple, edge_buf: int
     ) -> tuple[int, int]:
-        """takes the plot_shape tuple and edge buffer then returns the inset roi_shape tuple"""
+        """takes the plot_shape tuple and edge buffer then returns the inset roi_shape tuple
+        (x, y)"""
         return (
             int(plot_shape[0] - edge_buf),
             int(plot_shape[1] - 4 * edge_buf),
@@ -35,14 +34,16 @@ class PlotCoordinates:
         )
 
     def plot_boundaries(
-        image_stack: np.array,
-        plot_coords,
-        roi_coords,
-        plot_shape,
-        roi_shape,
-    ):
+        self,
+        img: np.array,
+        plot_coords: list,
+        roi_coords: list,
+        plot_shape: tuple[tuple, tuple],
+        roi_shape: tuple[int, int],
+    ) -> list:
         """creates pyplot figure with plot boundaries for visual verification"""
-        img = image_stack[38]
+
+        plot_id_list = []
         figure, ax = plt.subplots(1, figsize=(6, 20))
         ax.imshow(img, cmap="gray")
         ax.set_title("plot boundaries (red), plot roi (green)")
@@ -88,7 +89,10 @@ class PlotCoordinates:
                 s=plot_id,
                 c="magenta",
             )
-            print(f"plot: {plot_id}, roi_origin: {roi_coord}")
+            # print(f"plot: {plot_id}, roi_origin: {roi_coord}")
+
+            plot_id_list.append(plot_id)
+        return plot_id_list
 
 
 class ImageProcessing:
@@ -161,6 +165,28 @@ class ImageProcessing:
         denom = np.add(band_a, band_b)
         return np.divide(
             numer, denom, out=np.zeros_like(numer), where=(denom != 0)
+        )
+
+    def ndsi_mean(
+        self,
+        arr: npt.NDArray,
+        origin: tuple[int, int],
+        shape: tuple[int, int],
+        mask: npt.NDArray,
+    ) -> float:
+        """Return mean value for arr in the given region of interest.
+
+        Origin and shape are (x, y), but the np.array is (y, x).
+
+        Calculates mean using a boolean mask to exclude bg values.
+        """
+
+        roi_width, roi_height = shape
+        roi_x, roi_y = origin
+
+        return np.mean(
+            a=arr[roi_y : roi_y + roi_height, roi_x : roi_x + roi_width],
+            where=mask[roi_y : roi_y + roi_height, roi_x : roi_x + roi_width],
         )
 
 
