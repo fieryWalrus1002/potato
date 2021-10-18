@@ -12,7 +12,8 @@ __pycache__/
 # data export
 
 
-# big image files
+# raw image data folders
+
 *.tiff
 *.tif
 *.npy
