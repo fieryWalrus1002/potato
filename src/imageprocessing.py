@@ -5,32 +5,31 @@ import os
 import cv2 as cv
 import glob
 import numpy.typing as npt
+from pathlib import Path
 
 
 class ImageProcessing:
-    def __init__(self, params):
-        self.params = params
-        pass
+    def __init__(self, data_import_path, data_export_path):
+        self.data_import_path = data_import_path
+        self.data_export_path = data_export_path
 
     def save_idx_img(self, array, plot, index):
         """takes np.array and converts to a PIL.Image, then saves it into the data_export_path"""
         im = Image.fromarray(array)
         im.save(
-            self.params["data_export_path"]
-            + "plot_"
-            + str(plot)
-            + "_index_"
-            + index
-            + ".png"
+            self.data_export_path,
+            +"plot_" + str(plot) + "_index_" + index + ".png",
         )
 
-    def load_img(self, channel_name: str):
+    def load_img(self, channel_name: str, img_suffix: str = "tif"):
         """open image file, replace all '-10000' transparent values with zero, and return"""
-        image_path = glob.glob(
-            os.path.join(
-                self.params["data_import_path"], f"*{channel_name}.tif"
-            )
-        )[0]
+        image_path = str(
+            list(
+                Path(self.data_import_path).glob(
+                    f"*{channel_name}.{img_suffix}"
+                )
+            )[0]
+        )
 
         image = cv.imread(image_path, cv.IMREAD_UNCHANGED)
 
@@ -75,9 +74,10 @@ class ImageProcessing:
 
         numer = np.subtract(band_a, band_b)
         denom = np.add(band_a, band_b)
-        return np.divide(
+        spec_idx = np.divide(
             numer, denom, out=np.zeros_like(numer), where=(denom != 0)
         )
+        return np.nan_to_num(spec_idx)
 
     def ndsi_mean(
         self,
