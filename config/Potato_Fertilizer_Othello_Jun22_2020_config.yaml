@@ -1,0 +1,37 @@
+NDVI_TH: 0.3
+camera: rededge_mx_band_wl
+camera_wl:
+  blue: 475
+  blue-444: 444
+  green: 560
+  green-531: 531
+  nir: 842
+  red: 668
+  red-650: 650
+  red-edge: 717
+  red-edge-705: 705
+  red-edge-740: 740
+config_file: c:\data\remote_sensing\potato/config/Potato_Fertilizer_Othello_Jun22_2020_config.yaml
+data_acquisition_date: Jun22_2020
+data_export_path: c:\data\remote_sensing\potato/data/processed/Jun22_2020
+data_import_path: c:\data\remote_sensing\potato/data/raw/Jun22_2020
+edge_buf: 40
+field_angle: 182.4
+field_dim: !!python/tuple
+- 7400
+- 1590
+field_origin: !!python/tuple
+- 2400
+- 1460
+ground_truth_path: c:\data\remote_sensing\potato/data/raw/ground_truth.csv
+image_format: '*.tif'
+load_from_config: true
+num_ranges: 13
+plot_export_path: c:\data\remote_sensing\potato/data/image_export/
+plot_offset: !!python/tuple
+- -50
+- 0
+plot_shape: !!python/tuple
+- 200
+- 492
+project_stub: Potato_Fertilizer_Othello
